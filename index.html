@@ -1,347 +1,45 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lembar Kerja Matematika</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
-        body { font-family: 'Poppins', sans-serif; }
-        
-        .trophy-animation {
-            animation: bounce 0.6s ease-in-out infinite alternate;
-        }
-        
-        @keyframes bounce {
-            from { transform: translateY(0px); }
-            to { transform: translateY(-10px); }
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.5s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Petualangan Perkalian</title>
+<meta name="description" content="Belajar perkalian 1-10 dari benda konkret sampai hafal lancar.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
 </head>
-<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
-    <div class="container mx-auto px-4 py-8 max-w-4xl">
-        <!-- Header -->
-        <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
-            <h1 class="text-3xl font-bold text-center text-indigo-800 mb-4">
-                📚 Lembar Kerja Matematika
-            </h1>
-            <p class="text-center text-gray-600 mb-6">Penjumlahan dan Pengurangan Bilangan sampai 20.000</p>
-            
-            <!-- Info Panel -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-                <div class="bg-blue-50 rounded-lg p-4 text-center">
-                    <div class="text-2xl font-bold text-blue-600" id="timer">00:00</div>
-                    <div class="text-sm text-blue-500">Waktu Pengerjaan</div>
-                </div>
-                <div class="bg-green-50 rounded-lg p-4 text-center">
-                    <div class="text-lg font-semibold text-green-600" id="date"></div>
-                    <div class="text-sm text-green-500">Tanggal Pengerjaan</div>
-                </div>
-                <div class="bg-purple-50 rounded-lg p-4 text-center">
-                    <div class="text-2xl font-bold text-purple-600">10</div>
-                    <div class="text-sm text-purple-500">Total Soal</div>
-                </div>
-            </div>
-            
-            <!-- Control Buttons -->
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <button id="generateBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
-                    🎲 Buat Soal Baru
-                </button>
-                <button id="checkBtn" class="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg" disabled>
-                    ✅ Cek Jawaban
-                </button>
-            </div>
-        </div>
-
-        <!-- Worksheet -->
-        <div id="worksheet" class="bg-white rounded-2xl shadow-lg p-8 mb-8" style="display: none;">
-            <h2 class="text-2xl font-bold text-gray-800 mb-6 text-center">Kerjakan Soal Berikut!</h2>
-            
-            <!-- Addition Section -->
-            <div class="mb-8">
-                <h3 class="text-xl font-semibold text-indigo-700 mb-4 flex items-center">
-                    ➕ Penjumlahan (Soal 1-5)
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="additionProblems">
-                </div>
-            </div>
-            
-            <!-- Subtraction Section -->
-            <div>
-                <h3 class="text-xl font-semibold text-red-700 mb-4 flex items-center">
-                    ➖ Pengurangan (Soal 6-10)
-                </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="subtractionProblems">
-                </div>
-            </div>
-        </div>
-
-        <!-- Results Modal -->
-        <div id="resultsModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
-            <div class="bg-white rounded-2xl p-8 max-w-md w-full mx-4 text-center fade-in">
-                <div class="trophy-animation text-6xl mb-4">🏆</div>
-                <h2 class="text-2xl font-bold text-yellow-600 mb-4" id="congratsTitle">Selamat!</h2>
-                <div class="text-lg text-gray-700 mb-4" id="scoreText"></div>
-                <div class="bg-blue-50 rounded-lg p-4 mb-4">
-                    <div class="text-sm text-blue-600 mb-1">Waktu Pengerjaan:</div>
-                    <div class="font-semibold text-blue-800" id="finalTime"></div>
-                </div>
-                <div class="bg-green-50 rounded-lg p-4 mb-6">
-                    <div class="text-sm text-green-600 mb-1">Tanggal Pengerjaan:</div>
-                    <div class="font-semibold text-green-800" id="finalDate"></div>
-                </div>
-                <div class="text-indigo-600 font-medium mb-6 italic" id="motivationText"></div>
-                <button id="closeModal" class="bg-indigo-600 hover:bg-indigo-700 text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300">
-                    Tutup
-                </button>
-            </div>
-        </div>
+<body>
+  <header id="topbar" class="topbar hidden">
+    <button id="btn-home" class="icon-btn" aria-label="Kembali ke peta">🗺️</button>
+    <div class="topbar-title" id="topbar-title">Petualangan Perkalian</div>
+    <div class="topbar-stats">
+      <span class="pill pill-star">⭐ <b id="hud-bintang">0</b></span>
+      <span class="pill pill-streak">🔥 <b id="hud-streak">0</b></span>
     </div>
+  </header>
 
-    <script>
-        let startTime = null;
-        let timerInterval = null;
-        let problems = [];
-        let isWorksheetActive = false;
+  <main id="screen" class="screen" aria-live="polite"></main>
 
-        // Initialize date
-        function updateDate() {
-            const now = new Date();
-            const options = { 
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric' 
-            };
-            document.getElementById('date').textContent = now.toLocaleDateString('id-ID', options);
-        }
+  <div id="toast" class="toast hidden"></div>
+  <div id="confetti" class="confetti hidden" aria-hidden="true"></div>
 
-        // Timer functions
-        function startTimer() {
-            startTime = new Date();
-            timerInterval = setInterval(updateTimer, 1000);
-        }
-
-        function updateTimer() {
-            if (!startTime) return;
-            const now = new Date();
-            const elapsed = Math.floor((now - startTime) / 1000);
-            const minutes = Math.floor(elapsed / 60);
-            const seconds = elapsed % 60;
-            document.getElementById('timer').textContent = 
-                `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-        }
-
-        function stopTimer() {
-            if (timerInterval) {
-                clearInterval(timerInterval);
-                timerInterval = null;
-            }
-        }
-
-        // Generate random problems
-        function generateProblems() {
-            problems = [];
-            
-            // Generate 5 addition problems (easy, medium, hard mix)
-            for (let i = 0; i < 5; i++) {
-                let num1, num2;
-                if (i < 2) { // Easy (1-1000)
-                    num1 = Math.floor(Math.random() * 1000) + 1;
-                    num2 = Math.floor(Math.random() * 1000) + 1;
-                } else if (i < 4) { // Medium (1000-10000)
-                    num1 = Math.floor(Math.random() * 9000) + 1000;
-                    num2 = Math.floor(Math.random() * 9000) + 1000;
-                } else { // Hard (10000-20000)
-                    num1 = Math.floor(Math.random() * 10000) + 10000;
-                    num2 = Math.floor(Math.random() * (20000 - num1)) + 1;
-                }
-                problems.push({
-                    type: 'addition',
-                    num1: num1,
-                    num2: num2,
-                    answer: num1 + num2
-                });
-            }
-            
-            // Generate 5 subtraction problems
-            for (let i = 0; i < 5; i++) {
-                let num1, num2;
-                if (i < 2) { // Easy
-                    num1 = Math.floor(Math.random() * 1000) + 500;
-                    num2 = Math.floor(Math.random() * (num1 - 1)) + 1;
-                } else if (i < 4) { // Medium
-                    num1 = Math.floor(Math.random() * 9000) + 5000;
-                    num2 = Math.floor(Math.random() * (num1 - 1000)) + 1000;
-                } else { // Hard
-                    num1 = Math.floor(Math.random() * 10000) + 10000;
-                    num2 = Math.floor(Math.random() * (num1 - 5000)) + 5000;
-                }
-                problems.push({
-                    type: 'subtraction',
-                    num1: num1,
-                    num2: num2,
-                    answer: num1 - num2
-                });
-            }
-        }
-
-        // Display problems
-        function displayProblems() {
-            const additionContainer = document.getElementById('additionProblems');
-            const subtractionContainer = document.getElementById('subtractionProblems');
-            
-            additionContainer.innerHTML = '';
-            subtractionContainer.innerHTML = '';
-            
-            // Display addition problems (1-5)
-            for (let i = 0; i < 5; i++) {
-                const problem = problems[i];
-                const problemDiv = document.createElement('div');
-                problemDiv.className = 'bg-blue-50 rounded-lg p-4 border-2 border-blue-200';
-                problemDiv.innerHTML = `
-                    <div class="text-lg font-semibold text-blue-800 mb-2">${i + 1}.</div>
-                    <div class="text-xl font-mono text-center mb-3">
-                        <div>${problem.num1.toLocaleString('id-ID')}</div>
-                        <div>+ ${problem.num2.toLocaleString('id-ID')}</div>
-                        <div class="border-t-2 border-blue-300 pt-2 mt-2">
-                            <input type="number" id="answer${i}" class="w-full text-center text-lg font-semibold bg-white border-2 border-blue-300 rounded-lg py-2 focus:border-blue-500 focus:outline-none" placeholder="Jawaban">
-                        </div>
-                    </div>
-                `;
-                additionContainer.appendChild(problemDiv);
-            }
-            
-            // Display subtraction problems (6-10)
-            for (let i = 5; i < 10; i++) {
-                const problem = problems[i];
-                const problemDiv = document.createElement('div');
-                problemDiv.className = 'bg-red-50 rounded-lg p-4 border-2 border-red-200';
-                problemDiv.innerHTML = `
-                    <div class="text-lg font-semibold text-red-800 mb-2">${i + 1}.</div>
-                    <div class="text-xl font-mono text-center mb-3">
-                        <div>${problem.num1.toLocaleString('id-ID')}</div>
-                        <div>- ${problem.num2.toLocaleString('id-ID')}</div>
-                        <div class="border-t-2 border-red-300 pt-2 mt-2">
-                            <input type="number" id="answer${i}" class="w-full text-center text-lg font-semibold bg-white border-2 border-red-300 rounded-lg py-2 focus:border-red-500 focus:outline-none" placeholder="Jawaban">
-                        </div>
-                    </div>
-                `;
-                subtractionContainer.appendChild(problemDiv);
-            }
-        }
-
-        // Check answers
-        function checkAnswers() {
-            let correct = 0;
-            const results = [];
-            
-            for (let i = 0; i < 10; i++) {
-                const userAnswer = parseInt(document.getElementById(`answer${i}`).value) || 0;
-                const correctAnswer = problems[i].answer;
-                const isCorrect = userAnswer === correctAnswer;
-                
-                if (isCorrect) correct++;
-                results.push({ correct: isCorrect, userAnswer, correctAnswer });
-                
-                // Visual feedback
-                const input = document.getElementById(`answer${i}`);
-                input.className = input.className.replace(/border-\w+-\d+/g, '');
-                input.className += isCorrect ? ' border-green-500 bg-green-50' : ' border-red-500 bg-red-50';
-            }
-            
-            stopTimer();
-            showResults(correct, results);
-        }
-
-        // Show results
-        function showResults(correct, results) {
-            const modal = document.getElementById('resultsModal');
-            const scoreText = document.getElementById('scoreText');
-            const finalTime = document.getElementById('finalTime');
-            const finalDate = document.getElementById('finalDate');
-            const motivationText = document.getElementById('motivationText');
-            const congratsTitle = document.getElementById('congratsTitle');
-            
-            const percentage = (correct / 10) * 100;
-            
-            // Set congratulations message
-            if (percentage === 100) {
-                congratsTitle.textContent = "🌟 SEMPURNA! 🌟";
-                motivationText.textContent = "Luar biasa! Kamu menguasai matematika dengan sempurna!";
-            } else if (percentage >= 80) {
-                congratsTitle.textContent = "🎉 HEBAT! 🎉";
-                motivationText.textContent = "Kerja bagus! Kamu hampir sempurna, terus berlatih!";
-            } else if (percentage >= 60) {
-                congratsTitle.textContent = "👍 BAGUS! 👍";
-                motivationText.textContent = "Tidak buruk! Dengan latihan lebih, kamu pasti bisa lebih baik!";
-            } else {
-                congratsTitle.textContent = "💪 SEMANGAT! 💪";
-                motivationText.textContent = "Jangan menyerah! Setiap kesalahan adalah langkah menuju kesuksesan!";
-            }
-            
-            scoreText.innerHTML = `
-                <div class="text-2xl font-bold ${percentage >= 80 ? 'text-green-600' : percentage >= 60 ? 'text-yellow-600' : 'text-red-600'}">
-                    ${correct}/10 Benar (${percentage}%)
-                </div>
-            `;
-            
-            finalTime.textContent = document.getElementById('timer').textContent;
-            finalDate.textContent = document.getElementById('date').textContent;
-            
-            modal.style.display = 'flex';
-        }
-
-        // Event listeners
-        document.getElementById('generateBtn').addEventListener('click', function() {
-            generateProblems();
-            displayProblems();
-            document.getElementById('worksheet').style.display = 'block';
-            document.getElementById('checkBtn').disabled = false;
-            document.getElementById('timer').textContent = '00:00';
-            startTimer();
-            isWorksheetActive = true;
-            
-            // Scroll to worksheet
-            document.getElementById('worksheet').scrollIntoView({ behavior: 'smooth' });
-        });
-
-        document.getElementById('checkBtn').addEventListener('click', function() {
-            if (isWorksheetActive) {
-                checkAnswers();
-                isWorksheetActive = false;
-            }
-        });
-
-        document.getElementById('closeModal').addEventListener('click', function() {
-            document.getElementById('resultsModal').style.display = 'none';
-        });
-
-        // Initialize
-        updateDate();
-        
-        // Update date every minute
-        setInterval(updateDate, 60000);
-    </script>
-<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'98bb39593458fdc5',t:'MTc1OTk4NTA3OS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+  <!-- Data (di-bundle sebagai JS agar bisa dibuka tanpa server / offline penuh) -->
+  <script src="js/config.js"></script>
+  <script src="data/kurikulum.js"></script>
+  <script src="data/kartu.js"></script>
+  <script src="data/misi.js"></script>
+  <script src="data/soal-cerita.js"></script>
+  <!-- Modul aplikasi -->
+  <script src="js/state.js"></script>
+  <script src="js/sync.js"></script>
+  <script src="js/leitner.js"></script>
+  <script src="js/generator.js"></script>
+  <script src="js/render.js"></script>
+  <script src="js/manipulatif.js"></script>
+  <script src="js/screens.js"></script>
+  <script src="js/screens2.js"></script>
+  <script src="js/app.js"></script>
+</body>
 </html>
